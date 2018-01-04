@@ -112,19 +112,19 @@ def cnn_model():
 
 model = cnn_model()
 # let's train the model using SGD + momentum (how original).
-lr = 0.01
+lr = 0.05
 sgd = SGD(lr=lr, decay=1e-6, momentum=0.9, nesterov=True)
+batch_size = 64
+nb_epoch = 30
+
 model.compile(loss='categorical_crossentropy',
               optimizer=sgd,
               metrics=['accuracy'])
-tensorboard = TensorBoard(log_dir="/output/logs/{}".format(time()), histogram_freq=0, batch_size=32, write_graph=True, write_grads=False, write_images=False, embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None)
+tensorboard = TensorBoard(log_dir="/output/logs/{}".format(time()), histogram_freq=0, batch_size=batch_size, write_graph=True, write_grads=False, write_images=False, embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None)
 
 def lr_schedule(epoch):
     return lr*(0.1**int(epoch/10))
 
-
-batch_size = 32
-nb_epoch = 30
 
 model.fit(X, Y,
           batch_size=batch_size,
